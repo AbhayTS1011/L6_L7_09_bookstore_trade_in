@@ -13,7 +13,7 @@ A small Python module that evaluates used book trade-in values across formats, w
 | `bookstore_trade_in.py` | The module under test |
 | `test_bookstore_trade.py` | Starter test file |
 
-Keep all your Lab 6 work in this `LAB6` folder. Lab 7 has been added to this repo in the `LAB7` folder.
+Keep all your Lab 6 work in this folder. The upstream repository contains Lab 6 only; Lab 7 is not included.
 
 Refer to the lab handout for instructions.
 ## Coverage deliverables
@@ -31,3 +31,4 @@ python -m coverage report -m bookstore_trade_in.py
 ```
 
 Both suites currently pass 27 tests and report 100% line and branch coverage. The corresponding result images are in `screenshots/`.
+
