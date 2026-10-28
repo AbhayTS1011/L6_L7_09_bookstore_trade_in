@@ -1,4 +1,12 @@
+FORMAT_BASE_VALUES = {
+    "textbook": 40.0,
+    "hardcover": 15.0,
+    "paperback": 8.0,
+}
+
+
 def process_book_buybacks(batches, store_credit_bonus):
+    """Evaluate used book trade-in buybacks."""
     if not isinstance(batches, list) or store_credit_bonus < 0:
         raise ValueError("Invalid batches list or credit bonus")
 
@@ -10,17 +18,13 @@ def process_book_buybacks(batches, store_credit_bonus):
             continue
 
         format_type = batch.get("format", "paperback")
-        books = batch.get("books", [])
+        base_value = FORMAT_BASE_VALUES.get(format_type)
 
-        if format_type == "textbook":
-            base_value = 40.0
-        elif format_type == "hardcover":
-            base_value = 15.0
-        elif format_type == "paperback":
-            base_value = 8.0
-        else:
+        if base_value is None:
             rejected_items += 1
             continue
+
+        books = batch.get("books", [])
 
         batch_credit = 0.0
 
@@ -35,10 +39,8 @@ def process_book_buybacks(batches, store_credit_bonus):
 
             if is_counterfeit:
                 rejected_items += 1
-                if format_type == "textbook":
-                    batch_credit = 0.0
-                    break
-                batch_credit += 0.0
+                batch_credit = 0.0
+                break
             elif condition == "mint":
                 batch_credit += base_value * 1.25
             elif condition == "poor":
@@ -52,13 +54,16 @@ def process_book_buybacks(batches, store_credit_bonus):
         total_payout += batch_credit
 
     if rejected_items > 4:
-        return {"total_payout": round(total_payout, 2), "status": "AUDIT_REJECTED"}
-    if total_payout == 0.0:
-        return {"total_payout": 0.0, "status": "ZERO_CREDIT"}
-    return {"total_payout": round(total_payout, 2), "status": "COMPLETED"}
+        status = "AUDIT_REJECTED"
+    elif total_payout == 0.0:
+        status = "ZERO_CREDIT"
+    else:
+        status = "COMPLETED"
+    return {"total_payout": round(total_payout, 2), "status": status}
 
 
 def inspect_scanner_calibration(scanner_matrix):
+    """Monitor optical barcode scanner calibration status."""
     if not scanner_matrix:
         return "NO_DATA"
 

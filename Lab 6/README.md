@@ -13,6 +13,21 @@ A small Python module that evaluates used book trade-in values across formats, w
 | `bookstore_trade_in.py` | The module under test |
 | `test_bookstore_trade.py` | Starter test file |
 
-Keep all your Lab 6 work in this `LAB6` folder. Lab 7 will be added to this repo later.
+Keep all your Lab 6 work in this `LAB6` folder. Lab 7 has been added to this repo in the `LAB7` folder.
 
 Refer to the lab handout for instructions.
+## Coverage deliverables
+
+The code-coverage and branch-coverage test suites are kept separately as required by the Lab 6 handout. Run these commands from this folder:
+
+```powershell
+python -m coverage erase
+python -m coverage run -m pytest -q CodeCoverageTest_bookstore_trade_in.py
+python -m coverage report -m bookstore_trade_in.py
+
+python -m coverage erase
+python -m coverage run --branch -m pytest -q BranchCoverageTest_bookstore_trade_in.py
+python -m coverage report -m bookstore_trade_in.py
+```
+
+Both suites currently pass 27 tests and report 100% line and branch coverage. The corresponding result images are in `screenshots/`.
